@@ -39,7 +39,7 @@
            start-angle="0" sweep-angle="0"/>
       <arc class="darkColor hourSteps" x="-110" y="-110" width="220" height="220" arc-width="24"
            start-angle="0" sweep-angle="0"/>
-      <arc id="floorRing" class="defColor" x="-83" y="-83" width="166" height="166" arc-width="4"
+      <arc id="actRing" class="defColor" x="-83" y="-83" width="166" height="166" arc-width="4"
            start-angle="180" sweep-angle="0"/>
       <g id="hours">
         <line class="centerColor" x1="0" y1="0" x2="0" y2="-80" stroke-width="12" stroke-linecap="round"/>
@@ -65,16 +65,18 @@
   </svg>
   <svg id="detail" visibility="hidden" pointer-events="visible">
     <rect x="0" y="0%" width="100%" height="100%" fill="black"/>
-    <text id="timeLabel" class="defColor" x="0" y="50"
-          text-anchor="start" text-length="16" font-size="50" font-weight="light"/>
-    <text id="battLabel" class="defColor" x="0" y="100"
-          text-anchor="start" text-length="16" font-size="50" font-weight="light"/>
-    <text id="stepLabel" class="defColor" x="0" y="150"
-          text-anchor="start" text-length="16" font-size="50" font-weight="light"/>
-    <text id="floorLabel" class="defColor" x="0" y="200"
-          text-anchor="start" text-length="16" font-size="50" font-weight="light"/>
-    <text id="calLabel" class="defColor" x="0" y="250"
-          text-anchor="start" text-length="16" font-size="50" font-weight="light"/>
+    <text id="timeLabel" class="defColor" x="0" y="45"
+          text-anchor="start" text-length="16" font-size="45" font-weight="light"/>
+    <text id="battLabel" class="defColor" x="0" y="90"
+          text-anchor="start" text-length="16" font-size="45" font-weight="light"/>
+    <text id="stepLabel" class="defColor" x="0" y="135"
+          text-anchor="start" text-length="16" font-size="45" font-weight="light"/>
+    <text id="floorLabel" class="defColor" x="0" y="180"
+          text-anchor="start" text-length="16" font-size="45" font-weight="light"/>
+    <text id="calLabel" class="defColor" x="0" y="225"
+          text-anchor="start" text-length="16" font-size="45" font-weight="light"/>
+    <text id="actLabel" class="defColor" x="0" y="270"
+          text-anchor="start" text-length="16" font-size="45" font-weight="light"/>
     <svg>
 </svg>
 

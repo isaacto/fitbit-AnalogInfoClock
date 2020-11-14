@@ -32,7 +32,7 @@ let heartRateLabel = document.getElementById("heartRateLabel");
 let batteryRect = document.getElementById("batteryRect");
 let dayStepsElts = document.getElementsByClassName("daySteps");
 let hourStepsElts = document.getElementsByClassName("hourSteps");
-let floorRing = document.getElementById("floorRing");
+let actRing = document.getElementById("actRing");
 
 // detail UI elements
 let timeLabel = document.getElementById("timeLabel");
@@ -40,6 +40,7 @@ let battLabel = document.getElementById("battLabel");
 let stepLabel = document.getElementById("stepLabel");
 let floorLabel = document.getElementById("floorLabel");
 let calLabel = document.getElementById("calLabel");
+let actLabel = document.getElementById("actLabel");
 
 // timers
 var hourStepTimer;
@@ -50,8 +51,9 @@ const hourMilli = 60 * 60 * 1000;
 var currHour = 0;
 var hourStartSteps = 0;
 
-// theme
+// settings
 var mainColor;
+var actRingContent = "Floor";
 
 var theme = {
   "crimson": {
@@ -80,27 +82,36 @@ var theme = {
   },
 }
 
-function setMainColor(newColor) {
-  if (newColor == mainColor)
-    return;
+function updateMainColor() {
   document.getElementsByClassName("defColor").forEach((elt) => {
-    elt.style.fill = newColor;
+    elt.style.fill = mainColor;
   });
   document.getElementsByClassName("darkColor").forEach((elt) => {
-    elt.style.fill = theme[newColor]["dark"];
+    elt.style.fill = theme[mainColor]["dark"];
   });
   document.getElementsByClassName("centerColor").forEach((elt) => {
-    elt.style.fill = theme[newColor]["center"];
+    elt.style.fill = theme[mainColor]["center"];
   });
-  fs.writeFileSync("settings.json", [newColor], "json");
+}
+
+function saveSettings() {
+  fs.writeFileSync("settings.json", [mainColor, actRingContent], "json");
 }
 
 try {
   let saved = fs.readFileSync("settings.json", "json");
-  setMainColor(saved[0]);
+  mainColor = saved[0];
+  actRingContent = saved[1];
+} catch (err) {}
+try {
+  updateMainColor();
 } catch (err) {
-  setMainColor("#dd9060");
+  mainColor = "#dd9060";
+  updateMainColor();
+  saveSettings();
 }
+if (actRingContent === undefined)
+  actRingContent = "Floor";
 
 // Utility functions
 
@@ -170,10 +181,18 @@ function updateActivity() {
   hourStepsElts.forEach((elt) => {
     elt.sweepAngle = hourStepsDegree;
   });
-  let currFloor = today.adjusted.elevationGain;
-  if (currFloor !== undefined) {
-    floorRing.sweepAngle = currFloor / goals.elevationGain * 360;
+  if (actRingContent == "Floor") {
+    let currFloor = today.adjusted.elevationGain;
+    if (currFloor !== undefined) {
+      actRing.sweepAngle = currFloor / goals.elevationGain * 360;
+    }
+  } else if (actRingContent == "Active Minutes") {
+    let currActMin = today.adjusted.activeZoneMinutes.total;
+    if (currActMin !== undefined) {
+      actRing.sweepAngle = currActMin / goals.activeZoneMinutes.total * 360;
+    }
   }
+  
 }
 
 function setHourStep() {
@@ -240,6 +259,7 @@ function updateDetail() {
     stepLabel.text = `${currSteps};${currSteps - hourStartSteps}stp`;
     floorLabel.text = `${today.adjusted.elevationGain}/F`;
     calLabel.text = `${today.adjusted.calories}kCal`;
+    actLabel.text = `${today.adjusted.activeZoneMinutes.total}min`;
   }
 }
 
@@ -252,8 +272,14 @@ function to2(s) {
 let myElement = document.getElementById("myElement");
 
 messaging.peerSocket.addEventListener("message", (evt) => {
-  console.log("msg: " + evt.data.key + "=>" + evt.data.value);
-  if (evt && evt.data && evt.data.key === "mainColor") {
-    setMainColor(evt.data.value);
+  if (!evt.data.value)
+    return;
+  if (evt.data.key == "mainColor") {
+    mainColor = evt.data.value;
+    updateMainColor();
+  } else if (evt.data.key == "actRingContent") {
+    actRingContent = evt.data.value["values"][0]["name"];
+    updateActivity();
   }
+  saveSettings();
 });

@@ -15,6 +15,16 @@ function Colors(props) {
           ]}
         />
       </Section>
+      <Section title={<Text bold align="center">UI elements</Text>}>
+        <Select
+          label={`Activity ring`}
+          settingsKey="actRingContent"
+          options={[
+            {name:"Floor"},
+            {name:"Active Minutes"},
+          ]}
+        />
+      </Section>
     </Page>
   );
 }
