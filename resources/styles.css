@@ -1,0 +1,47 @@
+.detailText {
+  x: 0;
+  text-anchor: start;
+  text-length: 16;
+  font-size: 45;
+  font-weight: light;
+}
+
+.detailEndText {
+  x: 100%;
+  text-anchor: end;
+  text-length: 16;
+  font-size: 45;
+  font-weight: light;
+}
+
+.daySteps {
+  start-angle: 180;
+  sweep-angle: 0;
+}
+
+.actRing {
+  start-angle: 180;
+  sweep-angle: 0;
+}
+
+.hourSteps {
+  start-angle: 0;
+  sweep-angle: 0;
+}
+
+.clockLabel {
+  text-length: 3;
+  font-size: 30;
+  font-weight: bold;
+}
+
+.bg {
+  fill: black;
+}
+
+.tapPane {
+  x: 0;
+  y: 0;
+  width: 100%;
+  height: 100%;
+}

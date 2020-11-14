@@ -259,7 +259,7 @@ function updateDetail() {
     stepLabel.text = `${currSteps};${currSteps - hourStartSteps}stp`;
     floorLabel.text = `${today.adjusted.elevationGain}/F`;
     calLabel.text = `${today.adjusted.calories}kCal`;
-    actLabel.text = `${today.adjusted.activeZoneMinutes.total}min`;
+    actLabel.text = `${today.adjusted.activeZoneMinutes.total}m`;
   }
 }
 
@@ -268,8 +268,6 @@ function to2(s) {
     return "0" + s;
   return s;
 }
-
-let myElement = document.getElementById("myElement");
 
 messaging.peerSocket.addEventListener("message", (evt) => {
   if (!evt.data.value)
