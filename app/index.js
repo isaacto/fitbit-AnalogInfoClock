@@ -1,3 +1,5 @@
+// -*- mode: javascript; js-indent-level: 2; -*-
+
 import { me as appbit } from "appbit";
 import { clock } from "clock";
 import { display } from "display";
@@ -41,6 +43,7 @@ let stepLabel = document.getElementById("stepLabel");
 let floorLabel = document.getElementById("floorLabel");
 let calLabel = document.getElementById("calLabel");
 let actLabel = document.getElementById("actLabel");
+let distLabel = document.getElementById("distLabel");
 
 // timers
 var hourStepTimer;
@@ -181,18 +184,26 @@ function updateActivity() {
   hourStepsElts.forEach((elt) => {
     elt.sweepAngle = hourStepsDegree;
   });
+  let reading = 0;
+  let goal = 1;
   if (actRingContent == "Floor") {
-    let currFloor = today.adjusted.elevationGain;
-    if (currFloor !== undefined) {
-      actRing.sweepAngle = currFloor / goals.elevationGain * 360;
-    }
+    reading = today.adjusted.elevationGain;
+    goal = goals.elevationGain;
   } else if (actRingContent == "Active Minutes") {
-    let currActMin = today.adjusted.activeZoneMinutes.total;
-    if (currActMin !== undefined) {
-      actRing.sweepAngle = currActMin / goals.activeZoneMinutes.total * 360;
-    }
+    reading = today.adjusted.activeZoneMinutes.total;
+    goal = goals.activeZoneMinutes.total;
+  } else if (actRingContent == "Calories") {
+    reading = today.adjusted.calories;
+    goal = goals.calories;
+  } else if (actRingContent == "Distance") {
+    reading = today.adjusted.distance;
+    goal = goals.distance;
   }
-  
+  if (reading === undefined) {
+    reading = 0;
+    goal = 1;
+  }
+  actRing.sweepAngle = reading / goal * 360;
 }
 
 function setHourStep() {
@@ -257,9 +268,10 @@ function updateDetail() {
   if (appbit.permissions.granted("access_activity")) {
     let currSteps = today.adjusted.steps;
     stepLabel.text = `${currSteps};${currSteps - hourStartSteps}stp`;
+    distLabel.text = `${today.adjusted.distance}m`;
     floorLabel.text = `${today.adjusted.elevationGain}/F`;
     calLabel.text = `${today.adjusted.calories}kCal`;
-    actLabel.text = `${today.adjusted.activeZoneMinutes.total}m`;
+    actLabel.text = `${today.adjusted.activeZoneMinutes.total}'`;
   }
 }
 

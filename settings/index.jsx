@@ -22,6 +22,8 @@ function Colors(props) {
           options={[
             {name:"Floor"},
             {name:"Active Minutes"},
+            {name:"Calories"},
+            {name:"Distance"},
           ]}
         />
       </Section>

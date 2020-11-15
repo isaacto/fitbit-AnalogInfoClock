@@ -57,7 +57,8 @@
     <text id="timeLabel" class="defColor detailText" y="45"/>
     <text id="battLabel" class="defColor detailEndText" y="45"/>
     <text id="stepLabel" class="defColor detailText" y="90"/>
-    <text id="floorLabel" class="defColor detailText" y="135"/>
+    <text id="distLabel" class="defColor detailText" y="135"/>
+    <text id="floorLabel" class="defColor detailEndText" y="135"/>
     <text id="calLabel" class="defColor detailText" y="180"/>
     <text id="actLabel" class="defColor detailEndText" y="180"/>
   </svg>
