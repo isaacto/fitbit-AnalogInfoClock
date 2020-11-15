@@ -61,57 +61,55 @@ var actRingContent = "Floor";
 
 var theme = {
   "crimson": {
-    "dark": "#420713",
-    "dark2": "#a11531",
-    "center": "#611761",
-    "center2": "#b82eb8"
+    "on-dbg": "#420713",
+    "off-lbg": "#a11531",
+    "center-dbg": "#611761",
+    "center-lbg": "#b82eb8"
   },
   "#dd9060": {
-    "dark": "#4a2b17",
-    "dark2": "#ab673a",
-    "center": "#80253e",
-    "center2": "#c7385e"
+    "on-dbg": "#4a2b17",
+    "off-lbg": "#ab673a",
+    "center-dbg": "#80253e",
+    "center-lbg": "#c7385e"
   },
   "gold": {
-    "dark": "#404010",
-    "dark2": "#adad2f",
-    "center": "#80253e",
-    "center2": "#c7385e"
+    "on-dbg": "#404010",
+    "off-lbg": "#adad2f",
+    "center-dbg": "#80253e",
+    "center-lbg": "#c7385e"
   },
   "aquamarine": {
-    "dark": "#113d34",
-    "dark2": "#31ad94",
-    "center": "#80253e",
-    "center2": "#c7385e"
+    "on-dbg": "#113d34",
+    "off-lbg": "#31ad94",
+    "center-dbg": "#80253e",
+    "center-lbg": "#c7385e"
   },
   "deepskyblue": {
-    "dark": "#003647",
-    "dark2": "#008fba",
-    "center": "#80253e",
-    "center2": "#c7385e"
+    "on-dbg": "#003647",
+    "off-lbg": "#008fba",
+    "center-dbg": "#80253e",
+    "center-lbg": "#c7385e"
   },
   "plum": {
-    "dark": "#403040",
-    "dark2": "#bd93bd",
-    "center": "#80253e",
-    "center2": "#c7385e"
+    "on-dbg": "#403040",
+    "off-lbg": "#bd93bd",
+    "center-dbg": "#80253e",
+    "center-lbg": "#c7385e"
   },
 }
 
 function updateColor() {
-  let defColor = lightBg ? "black" : mainColor;
-  let bgColor = lightBg ? mainColor : 'black';
-  document.getElementsByClassName("defColor").forEach((elt) => {
-    elt.style.fill = defColor;
+  document.getElementsByClassName("fgColor").forEach((elt) => {
+    elt.style.fill = lightBg ? "black" : mainColor;
   });
-  document.getElementsByClassName("bg").forEach((elt) => {
-    elt.style.fill = bgColor;
+  document.getElementsByClassName("offColor").forEach((elt) => {
+    elt.style.fill = lightBg ? theme[mainColor]["off-lbg"] : "black";
   });
-  document.getElementsByClassName("darkColor").forEach((elt) => {
-    elt.style.fill = theme[mainColor][lightBg ? "dark2" : "dark"];
+  document.getElementsByClassName("onColor").forEach((elt) => {
+    elt.style.fill = lightBg ? mainColor : theme[mainColor]["on-dbg"];
   });
   document.getElementsByClassName("centerColor").forEach((elt) => {
-    elt.style.fill = theme[mainColor][lightBg ? "center2" : "center"];
+    elt.style.fill = theme[mainColor][lightBg ? "center-lbg" : "center-dbg"];
   });
 }
 
@@ -310,7 +308,6 @@ messaging.peerSocket.addEventListener("message", (evt) => {
     updateColor();
   } else if (evt.data.key == "lightBg") {
     lightBg = evt.data.value;
-    console.log("lightBg = " + lightBg);
     updateColor();
   } else if (evt.data.key == "actRingContent") {
     if (!evt.data.value)
