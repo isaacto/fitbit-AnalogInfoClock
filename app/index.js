@@ -56,61 +56,82 @@ var hourStartSteps = 0;
 
 // settings
 var mainColor;
+var lightBg = false;
 var actRingContent = "Floor";
 
 var theme = {
   "crimson": {
     "dark": "#420713",
-    "center": "#611761"
+    "dark2": "#a11531",
+    "center": "#611761",
+    "center2": "#b82eb8"
   },
   "#dd9060": {
     "dark": "#4a2b17",
-    "center": "#80253e"
+    "dark2": "#ab673a",
+    "center": "#80253e",
+    "center2": "#c7385e"
   },
   "gold": {
     "dark": "#404010",
-    "center": "#80253e"
+    "dark2": "#adad2f",
+    "center": "#80253e",
+    "center2": "#c7385e"
   },
   "aquamarine": {
     "dark": "#113d34",
-    "center": "#80253e"
+    "dark2": "#31ad94",
+    "center": "#80253e",
+    "center2": "#c7385e"
   },
   "deepskyblue": {
     "dark": "#003647",
-    "center": "#80253e"
+    "dark2": "#008fba",
+    "center": "#80253e",
+    "center2": "#c7385e"
   },
   "plum": {
     "dark": "#403040",
-    "center": "#80253e"
+    "dark2": "#bd93bd",
+    "center": "#80253e",
+    "center2": "#c7385e"
   },
 }
 
-function updateMainColor() {
+function updateColor() {
+  let defColor = lightBg ? "black" : mainColor;
+  let bgColor = lightBg ? mainColor : 'black';
   document.getElementsByClassName("defColor").forEach((elt) => {
-    elt.style.fill = mainColor;
+    elt.style.fill = defColor;
+  });
+  document.getElementsByClassName("bg").forEach((elt) => {
+    elt.style.fill = bgColor;
   });
   document.getElementsByClassName("darkColor").forEach((elt) => {
-    elt.style.fill = theme[mainColor]["dark"];
+    elt.style.fill = theme[mainColor][lightBg ? "dark2" : "dark"];
   });
   document.getElementsByClassName("centerColor").forEach((elt) => {
-    elt.style.fill = theme[mainColor]["center"];
+    elt.style.fill = theme[mainColor][lightBg ? "center2" : "center"];
   });
 }
 
 function saveSettings() {
-  fs.writeFileSync("settings.json", [mainColor, actRingContent], "json");
+  fs.writeFileSync("settings.json",
+                   [mainColor, actRingContent, lightBg],
+                   "json");
 }
 
 try {
   let saved = fs.readFileSync("settings.json", "json");
   mainColor = saved[0];
   actRingContent = saved[1];
+  lightBg = saved[2];
 } catch (err) {}
 try {
-  updateMainColor();
+  updateColor();
 } catch (err) {
   mainColor = "#dd9060";
-  updateMainColor();
+  updateColor();
   saveSettings();
 }
 if (actRingContent === undefined)
@@ -282,12 +303,18 @@ function to2(s) {
 }
 
 messaging.peerSocket.addEventListener("message", (evt) => {
-  if (!evt.data.value)
-    return;
   if (evt.data.key == "mainColor") {
+    if (!evt.data.value)
+      return;
     mainColor = evt.data.value;
-    updateMainColor();
+    updateColor();
+  } else if (evt.data.key == "lightBg") {
+    lightBg = evt.data.value;
+    console.log("lightBg = " + lightBg);
+    updateColor();
   } else if (evt.data.key == "actRingContent") {
+    if (!evt.data.value)
+      return;
     actRingContent = evt.data.value["values"][0]["name"];
     updateActivity();
   }

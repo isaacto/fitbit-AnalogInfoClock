@@ -14,6 +14,10 @@ function Colors(props) {
             {color: 'plum'}
           ]}
         />
+      <Toggle
+        settingsKey="lightBg"
+        label="Light background"
+        />
       </Section>
       <Section title={<Text bold align="center">UI elements</Text>}>
         <Select

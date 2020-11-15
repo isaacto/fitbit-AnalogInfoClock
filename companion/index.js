@@ -3,6 +3,7 @@ import * as messaging from "messaging";
 import { me as companion } from "companion";
 
 let KEY_COLOR = "mainColor";
+let LIGHT_BG = "lightBg";
 let ACT_CONTENT = "actRingContent";
 
 // Settings have been changed
@@ -13,6 +14,7 @@ settingsStorage.addEventListener("change", (evt) => {
 // Settings were changed while the companion was not running
 if (companion.launchReasons.settingsChanged) {
   sendValue(KEY_COLOR, settingsStorage.getItem(KEY_COLOR));
+  sendValue(LIGHT_BG, settingsStorage.getItem(LIGHT_BG));
   sendValue(ACT_CONTENT, settingsStorage.getItem(ACT_CONTENT));
 }
 
