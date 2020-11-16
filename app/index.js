@@ -1,6 +1,7 @@
 // -*- mode: javascript; js-indent-level: 2; -*-
 
 import { me as appbit } from "appbit";
+import { Barometer } from "barometer";
 import { clock } from "clock";
 import { display } from "display";
 import document from "document";
@@ -17,7 +18,6 @@ clock.granularity = "minutes";
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const coarseHrm = new HeartRateSensor({ frequency: 10 });
 
 // main UI elements
 const mainSect = document.getElementById("main");
@@ -44,6 +44,18 @@ let floorLabel = document.getElementById("floorLabel");
 let calLabel = document.getElementById("calLabel");
 let actLabel = document.getElementById("actLabel");
 let distLabel = document.getElementById("distLabel");
+let fineHrmLabel = document.getElementById("fineHrmLabel");
+let baroLabel = document.getElementById("baroLabel");
+
+// sensors
+var hrm;
+var barometer = null;
+if (Barometer) {
+  barometer = new Barometer({ frequency: 1 });
+  barometer.addEventListener("reading", () => {
+    baroLabel.text = `${barometer.pressure} Pa`;
+  });
+}
 
 // timers
 var hourStepTimer;
@@ -179,11 +191,15 @@ function updateBattery() {
 }
 
 function updateHeartRate() {
-  coarseHrm.addEventListener("reading", () => {
-    heartRateLabel.text = `${coarseHrm.heartRate}`;
-    coarseHrm.stop();
+  hrm = new HeartRateSensor({ frequency: 10 });
+  hrm.addEventListener("reading", () => {
+    if (hrm) {
+      heartRateLabel.text = `${hrm.heartRate}`;
+      hrm.stop();
+      hrm = null;
+    }
   });
-  coarseHrm.start();
+  hrm.start();
 }
 
 function updateActivity() {
@@ -253,6 +269,29 @@ function setHourStepSchedule() {
 
 setHourStepSchedule();
 
+function startDetailUpdate() {
+  detailTimer = setInterval(updateDetail, 1000);
+  hrm = new HeartRateSensor({ frequency: 1 });
+  hrm.addEventListener("reading", () => {
+    if (hrm) {
+      fineHrmLabel.text = `${hrm.heartRate} bpm`;
+    }
+  });
+  hrm.start();
+  if (barometer)
+    barometer.start();
+}
+
+function stopDetailUpdate() {
+  clearInterval(detailTimer);
+  if (hrm) {
+    hrm.stop();
+    hrm = null;
+  }
+  if (barometer)
+    barometer.stop();
+}
+
 clock.addEventListener("tick", updateClock);
 display.addEventListener("change", () => {
    if (display.on) {
@@ -260,20 +299,20 @@ display.addEventListener("change", () => {
      mainSect.style.visibility = "visible";
      detailSect.style.visibility = "hidden";
    } else {
-     clearInterval(detailTimer);
+     stopDetailUpdate();
    }
 });
 
 mainSect.onclick = (evt) => {
   mainSect.style.visibility = "hidden";
   detailSect.style.visibility = "visible";
-  detailTimer = setInterval(updateDetail, 1000);
+  startDetailUpdate();
   updateDetail();
 }
 
 detailSect.onclick = (evt) => {
+  stopDetailUpdate();
   detailSect.style.visibility = "hidden";
-  clearInterval(detailTimer);
   mainSect.style.visibility = "visible";
 }
 
@@ -286,7 +325,7 @@ function updateDetail() {
   battLabel.text = `${battery.chargeLevel}%`;
   if (appbit.permissions.granted("access_activity")) {
     let currSteps = today.adjusted.steps;
-    stepLabel.text = `${currSteps};${currSteps - hourStartSteps}stp`;
+    stepLabel.text = `${currSteps};${currSteps - hourStartSteps} steps`;
     distLabel.text = `${today.adjusted.distance}m`;
     floorLabel.text = `${today.adjusted.elevationGain}/F`;
     calLabel.text = `${today.adjusted.calories}kCal`;

@@ -61,5 +61,7 @@
     <text id="floorLabel" class="fgColor detailEndText" y="135"/>
     <text id="calLabel" class="fgColor detailText" y="180"/>
     <text id="actLabel" class="fgColor detailEndText" y="180"/>
+    <text id="fineHrmLabel" class="fgColor detailText" y="225"/>
+    <text id="baroLabel" class="fgColor detailText" y="270"/>
   </svg>
 </svg>
