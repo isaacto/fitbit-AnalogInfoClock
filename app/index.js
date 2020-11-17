@@ -10,6 +10,7 @@ import { HeartRateSensor } from "heart-rate";
 import * as messaging from "messaging";
 import { battery } from "power";
 import { today, goals } from "user-activity";
+import { preferences } from "user-settings";
 
 // Settings
 clock.granularity = "minutes";
@@ -318,10 +319,17 @@ detailSect.onclick = (evt) => {
 
 function updateDetail() {
   let now = new Date();
-  let hours = to2("" + now.getHours() % 12);
+  let hours = now.getHours();
+  let suffix = "";
+  if (preferences.clockDisplay === "12h") {
+    hours = hours % 12 || 12;
+    suffix = hours < 12 ? "a" : "p";
+  } else {
+    hours = to2("" + hours);
+  }
   let mins = to2("" + now.getMinutes());
   let secs = to2("" + now.getSeconds());
-  timeLabel.text = `${hours}:${mins}:${secs}`;
+  timeLabel.text = `${hours}:${mins}:${secs}${suffix}`;
   battLabel.text = `${battery.chargeLevel}%`;
   if (appbit.permissions.granted("access_activity")) {
     let currSteps = today.adjusted.steps;
