@@ -1,10 +1,10 @@
 {
   "devDependencies": {
-    "@fitbit/sdk": "~4.2.0",
+    "@fitbit/sdk": "~5.0.0",
     "@fitbit/sdk-cli": "^1.7.3"
   },
   "fitbit": {
-    "appUUID": "ecc779b9-a41c-409f-bd0d-94c90ea64c07",
+    "appUUID": "d89aa423-819b-4f80-8a69-96a7404c494c",
     "appType": "clockface",
     "appDisplayName": "AnalogInfoClock",
     "iconFile": "resources/icon.png",
@@ -14,9 +14,8 @@
       "access_heart_rate"
     ],
     "buildTargets": [
-      "mira",
-      "meson",
-      "gemini"
+      "atlas",
+      "vulcan"
     ],
     "i18n": {
       "en-US": {

@@ -3,6 +3,7 @@
 import { me as appbit } from "appbit";
 import { Barometer } from "barometer";
 import { clock } from "clock";
+import { me as device } from "device";
 import { display } from "display";
 import document from "document";
 import * as fs from "fs";
@@ -13,6 +14,7 @@ import { today, goals } from "user-activity";
 import { preferences } from "user-settings";
 
 // Settings
+if (!device.screen) device.screen = { width: 348, height: 250 };
 clock.granularity = "minutes";
 
 // Constants
@@ -30,6 +32,16 @@ let dayLabel = document.getElementById("dayLabel");
 let monthLabel = document.getElementById("monthLabel");
 let wdayLabel = document.getElementById("wdayLabel");
 let apmLabel = document.getElementById("apmLabel");
+// Avoids the corners for Versa 3 and Sense
+let offset = device.screen.width == 336 ? 25 : 0;
+monthLabel.x = offset;
+monthLabel.y = 25 + offset;
+dayLabel.x = device.screen.width - offset;
+dayLabel.y = 25 + offset;
+wdayLabel.x = offset;
+wdayLabel.y = device.screen.height - offset - 5;
+apmLabel.x = device.screen.width - offset;
+apmLabel.y = device.screen.height - offset - 5;
 
 let heartRateLabel = document.getElementById("heartRateLabel");
 let batteryRect = document.getElementById("batteryRect");
@@ -47,6 +59,13 @@ let actLabel = document.getElementById("actLabel");
 let distLabel = document.getElementById("distLabel");
 let fineHrmLabel = document.getElementById("fineHrmLabel");
 let baroLabel = document.getElementById("baroLabel");
+document.getElementsByClassName("detailText").forEach((elt) => {
+  elt.y = elt.getBBox().top + offset + 45;
+});
+document.getElementsByClassName("detailEndText").forEach((elt) => {
+  console.log(elt.getBBox().bottom)
+  elt.y = elt.getBBox().bottom + offset + 45;
+});
 
 // sensors
 var hrm;
@@ -185,7 +204,7 @@ function updateDatetime() {
 }
 
 function updateBattery() {
-  let screenHeight = 300;
+  let screenHeight = device.screen.height;
   let chargeLevel = Math.floor(battery.chargeLevel / 100 * screenHeight);
   batteryRect.y = screenHeight - chargeLevel;
   batteryRect.height = chargeLevel;
