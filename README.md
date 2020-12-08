@@ -30,6 +30,7 @@ This clock face is open-source.  See source code and latest development in:
     https://github.com/isaacto/fitbit-AnalogInfoClock
 
 Version history:
+  * 0.5.3: SDK 5.0 branch, use percentage values in SVG to avoid multi-version
   * 0.5.2: Clarify time, respect user 12h/24h preference
   * 0.5.1: Show heart rate and barometer
   * 0.5: Allow calories/distance as activity ring.  Allow light background.  Switch to CLI development toolchain.

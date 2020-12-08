@@ -1,4 +1,8 @@
 {
+  "name": "analog-info-clock",
+  "version": "0.5.3",
+  "private": false,
+  "license": "MIT",
   "devDependencies": {
     "@fitbit/sdk": "~5.0.0",
     "@fitbit/sdk-cli": "^1.7.3"
