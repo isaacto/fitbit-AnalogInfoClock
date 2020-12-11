@@ -29,6 +29,11 @@ This clock face is open-source.  See source code and latest development in:
 
     https://github.com/isaacto/fitbit-AnalogInfoClock
 
+A built version can be found in the Fitbit App Gallary
+
+  * SDK4.2: https://gallery.fitbit.com/details/ecc779b9-a41c-409f-bd0d-94c90ea64c07
+  * SDK5.0: https://gallery.fitbit.com/details/d89aa423-819b-4f80-8a69-96a7404c494c
+
 Version history:
   * 0.5.2: Clarify time, respect user 12h/24h preference
   * 0.5.1: Show heart rate and barometer
