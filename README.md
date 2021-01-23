@@ -1,9 +1,13 @@
 # AnalogInfoClock
 
-A deceptively simple analog clock focusing on usability rather than style.
+We want easy access to the rich information kept in our watches.  Analog clocks are great because we can get a rough idea very quickly about whatever we care about.  And old ones like myself don't need to wait for our old eyes to adjust to a near object (or worse, to change our glasses).
+
+If we want precise information, a digital clock is just a tap away.
+
+Because of these focuses, I don't want to allocate screen estate to eye-candies.  This clock face simply give us a lot of information, in big numbers and big symbols.
 
 Key features:
-  * Six colors to select from, light or dark background
+  * Six colors to select from, light or dark background (select one from the app setting in the mobile phone)
   * Analog main page, digital detail pages
 
 Main page:
@@ -11,7 +15,7 @@ Main page:
   * Show date and time as usual
   * Hour hand on a disc telling daily step goal completion
   * Minute hand on a disc telling hourly step goal completion (best effort, Fitbit has no API for it so it is guessed)
-  * Between them there is an activity ring showing one of daily active minute, calories, distance and floor goals completion
+  * Between them there is an activity ring showing one of daily active minute, calories, distance and floor goals completion (select one from the app setting in the mobile phone)
   * Daily completion starts from 6 o'clock, allowing one to "chase the clock hand"
   * Battery level indicator as background
   * Heart rate shown at the center.
